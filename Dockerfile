@@ -54,7 +54,7 @@ ARG _RESTY_CONFIG_DEPS="--with-openssl=/tmp/openssl-${RESTY_OPENSSL_VERSION} --w
 # 4) Cleanup
 
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends git ca-certificates
+RUN apt-get install -y --no-install-recommends git ca-certificates libssl-dev
 
 RUN git clone https://github.com/slact/nchan.git /tmp/nchan-${RESTY_NCHAN_VERSION} \
     && cd /tmp/nchan-${RESTY_NCHAN_VERSION} \
@@ -109,5 +109,12 @@ RUN \
 
 # Add additional binaries into PATH for convenience
 ENV PATH=$PATH:/usr/local/openresty/luajit/bin/:/usr/local/openresty/nginx/sbin/:/usr/local/openresty/bin/
+
+RUN \
+    cd /tmp/openresty-1.11.2.3/build/lua-cjson-2.1.0.5 \
+    && luarocks make
+
+RUN \
+    luarocks install lapis
 
 ENTRYPOINT ["/usr/local/openresty/bin/openresty", "-c", "/code/nginx.conf"]
