@@ -115,6 +115,8 @@ RUN \
     && luarocks make
 
 RUN \
-    luarocks install lapis
+    luarocks install \
+      lapis
+      lua-resty-template
 
 ENTRYPOINT ["/usr/local/openresty/bin/openresty", "-c", "/code/nginx.conf"]

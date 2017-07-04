@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>{{message}}</h1>
+
+  <h2>{* "This is" .. " a Lua " .. table.concat({"e","x","p","r","e","s","s","i","o","n"}) *}</h2>
+
+  {% local strs = {"This","is","Lua","code","too","but","won't","get","rendered"} %}
+
+  {% for idx, str in ipairs(strs) do %}
+    {{str}}
+  {% end %}
+
+  {# this is a comment #}
+
+
+</body>
+</html>
