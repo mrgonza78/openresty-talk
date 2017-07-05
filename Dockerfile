@@ -54,7 +54,7 @@ ARG _RESTY_CONFIG_DEPS="--with-openssl=/tmp/openssl-${RESTY_OPENSSL_VERSION} --w
 # 4) Cleanup
 
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends git ca-certificates libssl-dev
+RUN apt-get install -y --no-install-recommends git ca-certificates libssl-dev postgresql
 
 RUN git clone https://github.com/slact/nchan.git /tmp/nchan-${RESTY_NCHAN_VERSION} \
     && cd /tmp/nchan-${RESTY_NCHAN_VERSION} \
@@ -115,6 +115,8 @@ RUN \
     && luarocks make
 
 RUN \
-    luarocks install lapis
+    luarocks install lapis \
+    && luarocks install lapis-console \
+    && luarocks install lua-resty-repl
 
 ENTRYPOINT ["/usr/local/openresty/bin/openresty", "-c", "/code/nginx.conf"]
