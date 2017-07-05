@@ -54,7 +54,7 @@ ARG _RESTY_CONFIG_DEPS="--with-openssl=/tmp/openssl-${RESTY_OPENSSL_VERSION} --w
 # 4) Cleanup
 
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends git ca-certificates libssl-dev postgresql
+RUN apt-get install -y --no-install-recommends git ca-certificates libssl-dev
 
 RUN git clone https://github.com/slact/nchan.git /tmp/nchan-${RESTY_NCHAN_VERSION} \
     && cd /tmp/nchan-${RESTY_NCHAN_VERSION} \

@@ -1,5 +1,6 @@
 local lapis = require("lapis")
 local app = lapis.Application()
+local respond_to = require("lapis.application").respond_to
 local console = require("lapis.console")
 local todos = require("models.todo")
 
@@ -19,25 +20,24 @@ app:get("/todos", function(req)
   } }
 end)
 
-app:get("/todos/:id", function(req)
-  local todo = todos:find(req.params.id)
-  return { json = todo }
-end)
+app:match("/todos/:id", respond_to({
+  before = function (req)
+    req.todo = todos:find(req.params.id)
+  end,
+  DELETE = function(req)
+    return { json = req.todo:delete() }
+  end,
+  PUT = function(req)
+    req.todo:update(req.params)
+    return { json = req.todo }
+  end,
+  GET = function(req)
+    return { json = req.todo }
+end}))
 
 app:post("/todos", function(req)
   local todo = todos:create(req.params)
   return { json = todo }
-end)
-
-app:put("/todos/:id", function(req)
-  local todo = todos:find(req.params.id)
-  todo:update(req.params)
-  return { json = todo }
-end)
-
-app:delete("/todos/:id", function(req)
-  local todo = todos:find(req.params.id)
-  return { json = todo:delete() }
 end)
 
 return app
